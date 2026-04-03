@@ -22,4 +22,25 @@ const userProfileImgCtrl = async (req, res) => {
     }
 };
 
-module.exports = {  meCtrl, userProfileImgCtrl };
+const usersListCtrl = async (req, res) => {
+    try {
+        const users = await signUp.find({ isDeleted: false }).select('-password');
+        res.status(200).json(users);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: 'Server Error' });
+    }
+};
+
+const deleteUserCtrl = async (req, res) => {
+    try {
+        const user = await signUp.findByIdAndUpdate(req.params.id, { isDeleted: true }, { new: true });
+        
+        res.status(200).json({ message: 'User deleted successfully' });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: 'Server Error' });
+    }
+};
+
+module.exports = {  meCtrl, userProfileImgCtrl, usersListCtrl, deleteUserCtrl };

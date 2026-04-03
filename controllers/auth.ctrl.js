@@ -63,7 +63,7 @@ const signInCtrl = async (req, res) => {
     if(!email || !password){
       return res.status(400).json({message: 'All fields are required'});
     }
-    const user = await signUp.findOne({email: emailClean});
+    const user = await signUp.findOne({email: emailClean, isDeleted: false});
     if(!user){
       return res.status(400).json({message: 'User not found'});
     }
@@ -113,7 +113,7 @@ const forgotPasswordCtrl = async (req, res) => {
       return res.status(400).json({message: 'Email is required'});
     }
 
-    const user = await signUp.findOne({email: emailClean});
+    const user = await signUp.findOne({email: emailClean, isDeleted: false});
     if(!user){
       return res.status(400).json({message: 'User with this email does not exist'});
     }
