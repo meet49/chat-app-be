@@ -24,11 +24,21 @@ const userProfileImgCtrl = async (req, res) => {
 
 const usersListCtrl = async (req, res) => {
     try {
-        const users = await signUp.find({ isDeleted: false }).select('-password');
+        const { search } = req.query;
+        let query = { isDeleted: false };
+
+        if (search) {
+            query.$or = [
+                { username: { $regex: search, $options: "i" } },
+                { email: { $regex: search, $options: "i" } },
+            ];
+        }
+
+        const users = await signUp.find(query).select("-password");
         res.status(200).json(users);
     } catch (error) {
         console.log(error);
-        res.status(500).json({ message: 'Server Error' });
+        res.status(500).json({ message: "Server Error" });
     }
 };
 
