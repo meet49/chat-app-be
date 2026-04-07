@@ -1,5 +1,5 @@
 const express = require('express');
-const { meCtrl, userProfileImgCtrl, usersListCtrl, deleteUserCtrl } = require('../controllers/user.ctrl');
+const { meCtrl, userProfileImgCtrl, usersListCtrl, deleteUserCtrl, updateUserCtrl } = require('../controllers/user.ctrl');
 const authMiddleware = require('../middlewares/auth.middleware');
 const roleMiddleware = require('../middlewares/role.middleware');
 const upload = require('../middlewares/upload.middleware');
@@ -9,6 +9,7 @@ router.get('/me', authMiddleware, meCtrl);
 router.get('/admindashboard', authMiddleware, roleMiddleware('admin'), meCtrl);
 router.put('/profile-image', authMiddleware, upload.single('profileImage'), userProfileImgCtrl);
 router.get('/users-list', authMiddleware, usersListCtrl);
+router.put('/update-user/:id', authMiddleware, updateUserCtrl);
 router.delete('/delete-user/:id', authMiddleware, deleteUserCtrl);
 
 module.exports = router;
